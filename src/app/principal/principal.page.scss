@@ -1,0 +1,147 @@
+ion-content{
+    --background: burlywood;
+    border: 1px solid black;
+    
+  }
+
+
+  //botones
+  .btns{
+      border: 1px solid black;
+      color: black;
+      width: 150px;
+      height: 150px;
+      text-transform: uppercase;
+      white-space: normal;
+       
+    }
+  
+    //div pricipal
+    #prin{
+      width: 70%;  
+      float: left;
+    }
+  
+    //div segundario
+    #sec1{
+      background-color: rgb(255, 254, 254);
+      height: 90%;
+      width: 30%;
+      border: 1px solid black;
+      margin-right: 50px;
+      float: left;
+      position: fixed;
+      top: 0;
+      right: 0;
+      text-align: center;
+      z-index: 1;
+    }
+  
+    #indicadores{
+      width: 100%;
+      background-color: black;
+      height: 3%;
+    }
+  
+    #indicadores1{
+      float: left;
+      width: 60%;
+      height: 100%;
+      color: white;
+    }
+  
+    #indicadores2{
+      float: left;
+      width: 20%;
+      height: 100%;
+      color: white;
+    }
+  
+    #listaprods{
+      width: 100%;
+      height: 90%;
+      overflow: scroll;
+      
+    }
+  
+    #totalprods{
+      width: 100%;
+      height: 7%;
+      background-color: black;
+      color: white;
+      padding-top: 20px;
+      
+    }
+  
+    #prod{
+      width: 100%;
+      height: 50px;
+      margin-top: 5px;
+      background-color: rgb(212, 212, 212);;
+      border-top: 1px solid black;
+      border-bottom: 1px solid black;
+  
+    }
+  
+    #ajustarcant{
+      height: 100%;
+      width: 20%;
+      float: left;
+    }
+  
+    #ajustarcant ion-button{
+      --border-radius:0px !important;
+      --background:red;
+      border: 1px solid black;
+      transform: translateY(2px);
+      }
+  
+    #nombreprod{
+      height: 100%;
+      width: 45%;
+      float: left;
+    }
+  
+    #cantidadprod{
+      height: 100%;
+      width: 15%;
+      float: left;
+    }
+  
+    #precioprod{
+      height: 100%;
+      width: 20%;
+      float: left;
+    }
+   
+  //--------
+  
+  
+  //botones flotantes
+    #fabb{
+        --background:red;
+        border:1px solid black;
+        --border-radius : 0px !important;
+       width: 90px;
+    }
+      
+    #fabcustom2{
+      left: 8%;
+      
+    }
+    
+    #fabcustom3{
+      right: 25.5%;
+      
+    }
+  
+    #fabcustom4{
+      right: 15.3%;
+      
+    }
+  
+    #fabcustom5{
+      right: 5%;
+    }
+  //-------
+  

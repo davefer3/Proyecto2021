@@ -1,0 +1,100 @@
+<ion-content>
+  <div id="prin">
+
+  <ion-button (click)="addproducto(producto)" fill="clear" class="btns" *ngFor="let producto of prodsArray" [style.background-color]="producto.color">
+        <p>{{producto.nombre}}</p>
+    </ion-button >
+
+  </div>
+
+  <div id="sec1">
+
+    <div id="indicadores">
+
+      <div id="indicadores1">
+        PRODUCTO
+      </div>
+
+      <div id="indicadores2">
+        CANT.
+      </div>
+
+      <div id="indicadores2">
+        €
+      </div>
+
+    </div>
+
+    <div id="listaprods" >
+
+      <div id="prod" *ngFor="let item of carritodata">
+        
+        <div id="ajustarcant">
+          <ion-button (click)="restarProducto(item)"><ion-icon name="remove-outline"></ion-icon></ion-button>
+         </div>
+
+         <div id="nombreprod">
+          <p>{{item.nombre}}</p>
+        </div>
+
+        <div id="cantidadprod">
+            <p>{{item.cantidad}}</p>
+        </div>
+
+        <div id="precioprod">
+          <p>{{item.preciotot | number:'1.2'}}</p>
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+    <div id="totalprods">
+        TOTAL: {{totalcompra | number:'1.2'}} €
+    </div>
+
+  
+  </div>
+
+  <!--Fabcustoms izq-->
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed" id="fabcustom1">
+    <ion-fab-button id="fabb">
+      Otros
+    </ion-fab-button>
+
+    <ion-fab-list side="top">
+      <ion-fab-button><ion-icon name="logo-ionic"></ion-icon></ion-fab-button>
+      <ion-fab-button><ion-icon name="logo-angular"></ion-icon></ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed" id="fabcustom2" (click)="verEncargos()">
+    <ion-fab-button id="fabb">
+      Ver encargos
+    </ion-fab-button>
+  </ion-fab>
+
+
+  <!--Fabcustoms der-->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" id="fabcustom3" (click)="vaciarCarrito()">
+    <ion-fab-button id="fabb">
+      Cancelar
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" id="fabcustom4" (click)="nuevoEncargo()">
+    <ion-fab-button id="fabb">
+     Encargar
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" id="fabcustom5" (click)="aceptar()">
+    <ion-fab-button id="fabb">
+      Terminar
+    </ion-fab-button>
+  </ion-fab>
+
+
+</ion-content>

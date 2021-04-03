@@ -1,5 +1,7 @@
 {
   "name": "hnosappv2.1",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

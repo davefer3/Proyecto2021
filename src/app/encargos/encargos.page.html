@@ -1,0 +1,41 @@
+<ion-content>
+<div id="conprin">
+  <div id="buttonContainer">
+
+    <ion-button (click)="volver()" id="botonVolver">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+</div>
+
+  <div id="fechaencargo">
+    <ion-datetime [value]="fechaAux" (ionChange)="onChange($event)" placeholder="cambiar" display-format=" DDDD, DD MMMM YYYY" picker-format="DD MMMM YYYY" day-Names='Domingo, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado' month-Names='Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre' done-text="Aceptar" cancel-text="Cancelar" mode="ios"></ion-datetime>
+  </div>
+
+  <div id="encargoBanner">
+    <div id="tss2">
+      <p id="numeroCliente">Num.</p>
+      <p id="nombrecliente">Nombre cliente </p>
+      <p id="hora">H.Recogida </p>
+    </div>
+  </div>
+</div> 
+
+<div id="contenedor">
+
+  <div id="encargo" *ngFor="let item of encargos">
+
+    <div id="tss" (click)="verDatosEncargo(item)">
+      <p id="numeroCliente">{{item.numero}}</p>
+      <p id="nombrecliente">{{item.cliente}}</p>
+      <p id="hora"> {{item.hora}}</p>
+    </div>
+    
+    <div id="borrador" (click)="borrarEncargo(item)">
+      <ion-icon  name="trash-outline"></ion-icon>
+    </div>
+
+  </div>
+
+</div>
+
+</ion-content>
