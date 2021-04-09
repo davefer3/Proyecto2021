@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductosClass } from '../clases/productosClass';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { EncargosModalPage } from '../encargos-modal/encargos-modal.page';
 import { encargosClass } from '../clases/encargosClass';
+import { ventasClass } from '../clases/ventasClass';
 
 @Component({
   selector: 'app-principal',
@@ -18,15 +19,28 @@ export class PrincipalPage {
   totalcompra = 0;
 
   controlEncargos:boolean = false;
+  controlEncargoAll:encargosClass;
+  controlEncargoId = null;
   userdata:any=[];
 
-  controlEncargoAll:encargosClass;
+  diaSemana = {
+    0:"domingo",
+    1:"lunes",
+    2:"martes",
+    3:"miercoles",
+    4:"jueves",
+    5:"viernes",
+    6:"sabado"
+  }
+
+  metodoPago:string;
 
   constructor(
     private router:Router,
     private route: ActivatedRoute,
     private db:AngularFirestore,
     private modalController:ModalController,
+    private alertController:AlertController,
  ) { 
   this.carritodata = [];
   this.loadproductos();
@@ -36,6 +50,7 @@ export class PrincipalPage {
       this.carritodata = this.router.getCurrentNavigation().extras.state.carritodata.productos;
       this.controlEncargos = this.router.getCurrentNavigation().extras.state.encargado;
       this.controlEncargoAll = this.router.getCurrentNavigation().extras.state.carritodata;
+      this.controlEncargoId = this.router.getCurrentNavigation().extras.state.encargoid;
       this.calculartotal();
 
     }
@@ -69,10 +84,28 @@ export class PrincipalPage {
           });
 
           this.loadCategorias();
-          
+          this.loadOfertas();
       }
     );
    
+  }
+
+  loadOfertas(){ //Comprueba si hay alguna oferta activa de algún producto y la coloca en el producto
+    let dia = this.diaSemana[new Date().getDay()];
+    console.log(dia);
+
+    this.prodsArray.forEach(prod => {
+      let ofertasCollection:AngularFirestoreCollection = this.db.collection(this.userdata.nombre+'/datos/ofertas/',ref => ref.where("dia","==",dia).where("idprod","==",prod.id).where("activa","==",true))
+          ofertasCollection.valueChanges().subscribe(
+            res => {
+              console.log(res)
+              res.forEach(element =>{
+                  prod.precio = element.oferta;
+             })
+            }
+          )
+    });
+
   }
 
   loadCategorias(){// CARGA LAS CATEGORÍAS DE LOS PRODUCTOS PARA DARLES EL COLOR DE FONDO DE LA CATEGORÍA //
@@ -125,7 +158,7 @@ export class PrincipalPage {
     this.totalcompra = 0;
     this.controlEncargos = false;
     this.controlEncargoAll = null;
-    console.log(this.controlEncargoAll)
+    this.controlEncargoId = null;
   }
   
   restarProducto(producto:ProductosClass){// RESTAR 1 AL TOTAL DEL PRODUCTO SELECCIONADO
@@ -167,15 +200,77 @@ export class PrincipalPage {
         }
       });
       return await modalEncargo.present();
+      }
+    }
   }
 
-  
-
-  }
-  }
-
-  verEncargos(){
+ 
+  verEncargos(){ // ir a pagina de encargos
     this.router.navigateByUrl('/encargos')
+  }
+
+  verVentas(){ // ir a pagina de ventas
+    this.router.navigateByUrl('ventas');
+  }
+
+ async nuevaVenta() { //Saca por pantalla un alert para seleccionar el metodo de pago
+    if(this.carritodata.length > 0){
+
+      const alert = await this.alertController.create({
+        
+        header:'Metodo de Pago',
+        mode:'ios',
+        inputs: [
+          {
+            name: 'Efectivo',
+            type: 'radio',
+            label: 'Efectivo',
+            value: 'Efectivo',
+            checked: true
+          },
+          {
+            name: 'Tarjeta',
+            type: 'radio',
+            label: 'Tarjeta',
+            value: 'Tarjeta'
+          },
+        ],
+         buttons: [
+              {
+                text: 'Cancelar',
+              }, 
+              {
+                text: 'Aceptar',
+                handler: (alertData) => { 
+                     this.metodoPago = alertData;
+                      this.realizarVenta();
+                }
+              }
+            ]
+    });
+      await alert.present();    
+    }
+  }
+
+  realizarVenta(){
+
+   let venta =  new ventasClass();
+   venta.id = this.db.createId();
+   venta.fecha = new Date().toLocaleDateString();
+   venta.hora = new Date().toLocaleTimeString();
+   let horas = venta.hora.split(":");
+   venta.hora = horas[0]+":"+horas[1];
+   venta.metodoPago = this.metodoPago;
+   venta.productos = this.carritodata;
+   venta.timestamp = new Date().getTime();
+
+    this.db.doc(this.userdata.nombre +'/datos/ventas/' + venta.id).set(JSON.parse(JSON.stringify(venta)));
+    
+    if (this.controlEncargoId != null){
+      this.db.doc(this.userdata.nombre +'/datos/encargos/' + this.controlEncargoId).delete();
+    }
+
+    this.vaciarCarrito();
   }
 
 }

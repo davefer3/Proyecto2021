@@ -22,27 +22,26 @@ export class EncargosPage  {
     private alertController:AlertController
   ) {
     this.userdata = JSON.parse(localStorage.getItem("usuario"));
-    
-
     this.setfecha();
     this.consultarEncargos();
   }
 
-  setfecha(){
+  setfecha(){ //Coloca la fecha de los encargos a visualizar en el día actual
     this.fechaAux = new Date().toString();
     this.fechaEncargo = new Date(this.fechaAux).toLocaleDateString();
   }
 
-  volver(){
+  volver(){ //Volver a pagina principal
     this.router.navigateByUrl('/principal');
   }
 
-  onChange(event){
+  onChange(event){ // controla cuando se produce un cambio en el datepicker
     this.fechaEncargo = new Date(event.detail.value).toLocaleDateString();
+   
     this.consultarEncargos();
   }
 
-  consultarEncargos(){
+  consultarEncargos(){ // busca los encargos de acuerdo a la fecha seleccionada en el datepicker
     let encargosCollection:AngularFirestoreCollection  = this.db.collection(this.userdata.nombre+'/datos/encargos/', ref => ref.where("fecha","==",this.fechaEncargo));
     encargosCollection.valueChanges().subscribe(
       res =>{
@@ -65,36 +64,37 @@ export class EncargosPage  {
       }); 
   }
   
-  verDatosEncargo(encargo){
+  verDatosEncargo(encargo){ //vuelve a la pagina principal , pasandole a esta los datos del encargo seleccionado
     let navigationExtras: NavigationExtras = {
       state: {
         carritodata : encargo,
-        encargado : true
+        encargado : true,
+        encargoid : encargo.id
       }
     };
     this.router.navigate(['principal'], navigationExtras);
   }
 
- async borrarEncargo(encargo){
+  async borrarEncargo(encargo){ // borra el encargo seleccionado
 
-  const alert = await this.alertController.create({
-    mode:'ios',
-    header: 'Borrar encargo',
-    message: '¿Estas seguro de borrar este encargo?',
-    buttons: [
-      {
-        text: 'Cancelar',
-        handler:() => {
-          
+    const alert = await this.alertController.create({
+      mode:'ios',
+      header: 'Borrar encargo',
+      message: '¿Estas seguro de borrar este encargo?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler:() => {
+            
+          }
+        }, {
+          text: 'Aceptar',
+          handler: () => {
+            this.db.doc(this.userdata.nombre+'/datos/encargos/'+encargo.id).delete();
+          }
         }
-      }, {
-        text: 'Aceptar',
-        handler: () => {
-          this.db.doc(this.userdata.nombre+'/datos/encargos/'+encargo.id).delete();
-        }
-      }
-    ]
-  });
+      ]
+    });
 
   await alert.present();
 

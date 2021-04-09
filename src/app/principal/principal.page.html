@@ -65,8 +65,16 @@
     </ion-fab-button>
 
     <ion-fab-list side="top">
-      <ion-fab-button><ion-icon name="logo-ionic"></ion-icon></ion-fab-button>
-      <ion-fab-button><ion-icon name="logo-angular"></ion-icon></ion-fab-button>
+      
+        <ion-fab-button id="fabb" (click)="verVentas()">
+          VENTAS
+        </ion-fab-button>
+ 
+        <ion-fab-button id="fabb">
+          OFERTAS
+        </ion-fab-button>
+      
+      
     </ion-fab-list>
   </ion-fab>
 
@@ -90,7 +98,7 @@
     </ion-fab-button>
   </ion-fab>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" id="fabcustom5" (click)="aceptar()">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" id="fabcustom5" (click)="nuevaVenta()">
     <ion-fab-button id="fabb">
       Terminar
     </ion-fab-button>

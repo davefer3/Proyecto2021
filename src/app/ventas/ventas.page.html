@@ -1,0 +1,54 @@
+<ion-content>
+
+  <div id="conprin">
+    <ion-button (click)="volver()" id="botonVolver">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+  <div id="confiltros">
+    <ion-item lines="none" (click)="verFiltros()">
+      <ion-icon slot="start" name="search-outline"></ion-icon>
+      <ion-label>Filtros de Búsqueda</ion-label>
+      <ion-icon [name]="controladorIconoBusqueda"></ion-icon>
+
+    </ion-item>
+
+    <div id="muestrafiltros" [hidden]=controladorVisualFiltros>
+
+      <div id="fechaventa">
+        <h3>De:</h3>
+        <ion-datetime [value]="fechaAuxInicio" id="finicio" (ionChange)="onChange($event)" placeholder="cambiar" display-format=" DDDD, DD MMMM YYYY" picker-format="DD MMMM YYYY" day-Names='Domingo, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado' month-Names='Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre' done-text="Aceptar" cancel-text="Cancelar" mode="ios"></ion-datetime>        
+        <h3>A:</h3>
+        <ion-datetime [value]="fechaAuxFin" id="ffin" (ionChange)="onChange($event)" placeholder="cambiar" display-format=" DDDD, DD MMMM YYYY" picker-format="DD MMMM YYYY" day-Names='Domingo, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado' month-Names='Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre' done-text="Aceptar" cancel-text="Cancelar" mode="ios"></ion-datetime>      
+      </div>
+
+      <div id="filtroventa">
+        <select name="filtro" id="filtro" (change)="cambioCat($event)">
+          <option value="todo"> Todo </option>
+          <option value="{{item}}" *ngFor="let item of seleccion2">{{item}}</option>
+        </select>
+        :
+        <select name="subfiltro" id="subfiltro" value="todo" (change)="cambioSubCat($event)">
+          <option value="todo">Todo</option>
+          <option value="{{item}}" *ngFor="let item of seleccion">{{item}}</option>
+        </select>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div id="conventas" >
+    <div id="ventaind" *ngFor="let venta of ventas">
+        <h3>Fecha : <span>{{venta.fecha}} - </span>  Hora : <span>{{venta.hora}}</span> </h3>
+        <h3 *ngFor="let producto of venta.productos" id="prod"> {{producto.nombre}} x {{producto.cantidad}}</h3>
+        <h3 id="metodo">Metodo de pago : <span>{{venta.metodoPago}}</span></h3>
+  </div>
+  </div>
+
+  <div id="totalbusqueda">
+    TOTAL RESULTADOS : {{totalventas}}
+  </div>
+ 
+</ion-content>

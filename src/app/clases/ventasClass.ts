@@ -1,8 +1,8 @@
-export class encargosClass {
+export class ventasClass {
     id:string;
-    numero:number;
-    cliente:string;
     hora:string;
     fecha:string;
+    metodoPago:string;
     productos:any;
+    timestamp:any;
 }
