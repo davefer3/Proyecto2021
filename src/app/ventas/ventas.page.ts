@@ -80,7 +80,7 @@ export class VentasPage  {
       this.seleccionAux = event.srcElement.value
       this.ventas = this.ventasAux;
     }
-
+    this.contarTotalVentas();
   }
 
   cambioSubCat(event){

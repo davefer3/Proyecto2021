@@ -1,0 +1,50 @@
+<ion-content>
+  <div id="conprin">
+    <ion-button (click)="volver()" id="botonVolver">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+
+  <div id="headercontainer">
+
+    <div id="ofertaheader">
+      <p>Producto</p>
+      <p>Día</p>
+      <p>Precio</p>
+      <p>Activa</p>
+    </div>
+
+    <div id="añadir" (click)="nuevaOferta()">
+      <ion-icon  name="add"></ion-icon>
+    </div>
+
+  </div>
+  
+
+  <div id="ofertasContainer">
+
+    <div id="oferta" *ngFor="let oferta of ofertas">
+
+      <div id="info">
+        <p>{{oferta.nombreprod}}</p>
+        <p>{{oferta.dia}}</p>
+        <p>{{oferta.oferta}}€</p>
+        <ion-toggle id="{{oferta.id}}" mode="ios" checked="{{oferta.activa}}" (ionChange)="cambioEstadoOferta($event)"></ion-toggle>
+      </div>
+
+      <div id="editor" (click)="editarOferta(oferta)">
+        <ion-icon  name="pencil-outline"></ion-icon>
+      </div>
+
+      <div id="borrador" (click)="borrarOferta(oferta)">
+        <ion-icon  name="trash-outline"></ion-icon>
+      </div>
+
+      
+
+    </div>
+
+  </div>
+
+</ion-content>

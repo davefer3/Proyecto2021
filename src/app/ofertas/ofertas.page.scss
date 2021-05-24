@@ -1,0 +1,163 @@
+ion-content{
+    --background: burlywood;
+    border: 1px solid black;
+  }
+
+//boton volver
+#conprin{
+    height: 6%;
+}
+#botonVolver {
+    --background:#ff3126;
+    border:1px solid black;
+    
+}   
+
+#ofertasContainer{
+    width: 100%;
+    overflow: scroll;
+    height: 84%;
+    float: left;
+    display: block;
+}
+
+#oferta {
+    width: 100%;
+}
+
+#info{
+    width: 80%;
+    height: 80px;
+    display: block;
+    float: left;
+    border: 1px solid black;
+    margin-bottom: 10px;
+    margin-left: 10%;
+    text-align: center;
+    background-color: rgb(226, 157, 67);
+
+    p {
+        position: relative;
+        margin: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        float:left;
+        display: block;
+        width: 25%;
+        font-size: 20px;
+    }
+
+    ion-toggle {
+        position: relative;
+        margin: 0;
+        top: 50%;
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        --background-checked:rgb(95, 170, 24);
+        --background: #ff3126;   
+    }
+}
+
+#headercontainer {
+    width: 100%;
+    display:block;
+    float: left;
+}
+
+#ofertaheader {
+    display: block;
+    float: left;
+    width: 80%;
+    height: 70px;
+    margin: 0 auto;
+    margin-left: 10%;
+    border: 1px solid black;
+    margin-bottom: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    background-color: rgb(211, 198, 188);
+    p {
+        position: relative;
+        margin: 0;
+        top: 50%;
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        float:left;
+        display: block;
+        width: 25%;
+        font-size: 30px;
+    }
+
+    
+}
+
+
+
+
+
+#añadir {
+    display: block;
+    float: right;
+    width: 10%;
+    height: 100%;
+
+    ion-icon {
+    margin-top: 10px;
+    margin-left: 30px;
+    width: 50px;
+    height: 50px;
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: rgb(211, 198, 188);
+    transform: translateY(-3px);
+    }
+}
+
+
+#edit {
+    display: block;
+    float: left;
+    width: 10%;
+    height: 100%;
+
+    ion-icon {
+        margin-top: 10px;
+        margin-left: 30px;
+        width: 50px;
+        height: 50px;
+    
+    }
+}
+
+#borrador {
+    display: block;
+    float: left;
+    width: 3%;
+    height: 100%;
+    margin-left: 10px;
+
+    ion-icon {
+        margin-top: 10px;
+        width: 50px;
+        height: 50px;
+
+    }
+}
+
+#editor {
+    display: block;
+    float: left;
+    width: 3%;
+    height: 100%;
+    margin-left: 10px;
+
+    ion-icon {
+        margin-top: 15px;
+        width: 45px;
+        height:45px;
+
+    }
+}
+
+

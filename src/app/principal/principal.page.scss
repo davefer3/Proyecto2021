@@ -91,7 +91,7 @@ ion-content{
   
     #ajustarcant ion-button{
       --border-radius:0px !important;
-      --background:red;
+      --background:#ff3126;
       border: 1px solid black;
       transform: translateY(2px);
       }
@@ -119,10 +119,10 @@ ion-content{
   
   //botones flotantes
     #fabb{
-        --background:red;
+        --background:#ff3126;
         border:1px solid black;
         --border-radius : 0px !important;
-       width: 90px;
+        width: 90px;
        --color:white;
     }
       

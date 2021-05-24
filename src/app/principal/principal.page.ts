@@ -92,20 +92,17 @@ export class PrincipalPage {
 
   loadOfertas(){ //Comprueba si hay alguna oferta activa de algún producto y la coloca en el producto
     let dia = this.diaSemana[new Date().getDay()];
-    console.log(dia);
-
     this.prodsArray.forEach(prod => {
       let ofertasCollection:AngularFirestoreCollection = this.db.collection(this.userdata.nombre+'/datos/ofertas/',ref => ref.where("dia","==",dia).where("idprod","==",prod.id).where("activa","==",true))
           ofertasCollection.valueChanges().subscribe(
             res => {
-              console.log(res)
               res.forEach(element =>{
                   prod.precio = element.oferta;
              })
             }
           )
     });
-
+    console.log(this.prodsArray);
   }
 
   loadCategorias(){// CARGA LAS CATEGORÍAS DE LOS PRODUCTOS PARA DARLES EL COLOR DE FONDO DE LA CATEGORÍA //
@@ -178,9 +175,7 @@ export class PrincipalPage {
     
     if(this.carritodata.length >0){
       this.controlEncargoAll.productos = this.carritodata
-      console.log(this.controlEncargoAll);
       this.db.doc(this.userdata.nombre +'/datos/encargos/'+this.controlEncargoAll.id).update(JSON.parse(JSON.stringify(this.controlEncargoAll)));
-      console.log("se ha modificado un encargo");
       this.vaciarCarrito();
     }
 
@@ -211,6 +206,10 @@ export class PrincipalPage {
 
   verVentas(){ // ir a pagina de ventas
     this.router.navigateByUrl('ventas');
+  }
+
+  verOfertas(){
+    this.router.navigateByUrl('/ofertas');
   }
 
  async nuevaVenta() { //Saca por pantalla un alert para seleccionar el metodo de pago
