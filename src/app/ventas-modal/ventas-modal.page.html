@@ -1,0 +1,39 @@
+<ion-content>
+  <h1>Datos de la Venta</h1>
+
+  <div id="otrosDatos">
+    <p>Fecha : <span>{{venta.fecha}}</span></p>
+    <p>Hora : <span>{{venta.hora}}</span></p>
+    <p>Metodo Pago : <span>{{venta.metodoPago}}</span></p>
+    <p>Cliente : <span>{{venta.nombreCliente}}</span></p>
+  </div>
+
+  <div id="headercontainer">
+
+    <div id="ofertaheader">
+      <p>Producto</p>
+      <p>Cantidad</p>
+      <p>Total</p>
+    </div>
+  </div>
+
+  <div id="ofertasContainer">
+
+    <div id="oferta" *ngFor="let producto of venta.productos">
+
+      <div id="info" >
+        <p>{{producto.nombre}}</p>
+        <p>{{producto.cantidad}}</p>
+        <p>{{producto.preciotot | number:'1.2'}}€</p>
+
+      </div>
+  
+    </div>
+
+  </div>
+
+  <div id="generadoContainer">
+      TOTAL : {{generado | number:'1.2'}}€
+  </div>
+
+</ion-content>

@@ -43,7 +43,10 @@ export class PrincipalPage {
     private alertController:AlertController,
  ) { 
   this.carritodata = [];
+  this.userdata = JSON.parse(localStorage.getItem("usuario"));
   this.loadproductos();
+  this.loadCategorias();
+  this.controlarVisibilidad();
 
   this.route.queryParams.subscribe(params => {
     if (this.router.getCurrentNavigation().extras.state) {
@@ -59,65 +62,83 @@ export class PrincipalPage {
   }
 
   loadproductos(){ // CARGA DE PRODUCTOS DE LA BDD //
-    this.userdata = JSON.parse(localStorage.getItem("usuario"));
+    
     let prodsCollection:AngularFirestoreCollection = this.db.collection(this.userdata.nombre+'/datos/productos/');
     prodsCollection.valueChanges().subscribe(
   
       res =>{
           this.prodsArray = [];
           res.forEach(element=>{
-          let productoind = new ProductosClass();
 
+            if(element.activo == "true" && element.categoria!="sin categoria") {
+              let productoind = new ProductosClass();
               productoind.id = element.id;
               productoind.categoria = element.categoria;
               productoind.nombre = element.nombre;
               productoind.precio = element.precio
-              productoind.color = element.color
+              productoind.preferenciaProducto = element.preferencia;
 
               this.prodsArray.push(productoind);
-          
-          })
-
-          // Ordenar productos, primero por categoría y después por ID //
-          this.prodsArray.sort(function (a, b) {
-            return a.categoria - b.categoria || a.id - b.id;
-          });
-
-          this.loadCategorias();
-          this.loadOfertas();
-      }
-    );
-   
-  }
-
-  loadOfertas(){ //Comprueba si hay alguna oferta activa de algún producto y la coloca en el producto
-    let dia = this.diaSemana[new Date().getDay()];
-    this.prodsArray.forEach(prod => {
-      let ofertasCollection:AngularFirestoreCollection = this.db.collection(this.userdata.nombre+'/datos/ofertas/',ref => ref.where("dia","==",dia).where("idprod","==",prod.id).where("activa","==",true))
-          ofertasCollection.valueChanges().subscribe(
-            res => {
-              res.forEach(element =>{
-                  prod.precio = element.oferta;
-             })
             }
-          )
-    });
-    console.log(this.prodsArray);
+            this.prodsArray.sort(function (a, b) {
+              if (a.preferenciaProducto > b.preferenciaProducto) {
+                return 1;  
+              }
+              if (a.preferenciaProducto < b.preferenciaProducto) {
+                return -1;
+              }
+              return 0;
+            });
+           
+          });  
+          this.loadCategorias();
+      });
+   
+      
+
   }
 
   loadCategorias(){// CARGA LAS CATEGORÍAS DE LOS PRODUCTOS PARA DARLES EL COLOR DE FONDO DE LA CATEGORÍA //
     let catsCollection:AngularFirestoreCollection = this.db.collection(this.userdata.nombre+'/datos/categorias/');
     catsCollection.valueChanges().subscribe(
       res =>{
+
           res.forEach(element=>{
             for(let a=0;a<this.prodsArray.length;a++){
-              if(element.id == this.prodsArray[a].categoria){
-                this.prodsArray[a].color = element.color;
-              }
+
+                if(element.nombre == this.prodsArray[a].categoria ){
+                  this.prodsArray[a].color = element.color;
+                  this.prodsArray[a].preferenciaCategoria = element.preferencia;
+                  this.prodsArray[a].dispCategoria = element.activo;
+                  
+                } 
             }
-          })
-      } 
-    )    
+            
+          });
+          this.prodsArray.sort(function (a, b) {
+            if (a.preferenciaCategoria > b.preferenciaCategoria) {
+              return 1;  
+            }
+            if (a.preferenciaCategoria < b.preferenciaCategoria) {
+              return -1;
+            }
+            return 0;
+          });
+          this.controlarVisibilidad();    
+      });
+      
+  }
+
+  controlarVisibilidad(){ //Controlamos que botones son accesibles dependiendo de si su categoría es visible
+    for(let a=0;a<this.prodsArray.length;a++){
+      if(this.prodsArray[a].dispCategoria == "false"){
+        let x = document.getElementById(this.prodsArray[a].id);
+        x.style.display="none";
+      }else{
+        let x = document.getElementById(this.prodsArray[a].id);
+        x.style.removeProperty( 'display' );
+      }
+    }
   }
  
   addproducto(producto:ProductosClass){// AÑADE LOS PRODUCTOS SELECCIONADOS AL CARRITO //
@@ -152,10 +173,10 @@ export class PrincipalPage {
  
   vaciarCarrito(){// VACÍA EL CARRITO //
     this.carritodata = [];
-    this.totalcompra = 0;
     this.controlEncargos = false;
     this.controlEncargoAll = null;
     this.controlEncargoId = null;
+    this.calculartotal();
   }
   
   restarProducto(producto:ProductosClass){// RESTAR 1 AL TOTAL DEL PRODUCTO SELECCIONADO
@@ -178,7 +199,6 @@ export class PrincipalPage {
       this.db.doc(this.userdata.nombre +'/datos/encargos/'+this.controlEncargoAll.id).update(JSON.parse(JSON.stringify(this.controlEncargoAll)));
       this.vaciarCarrito();
     }
-
     }else{
     if(this.carritodata.length >0){
       const modalEncargo = await this.modalController.create({
@@ -191,7 +211,7 @@ export class PrincipalPage {
       });
       modalEncargo.onDidDismiss().then(data=>{
         if(data.data == "terminado"){
-          this.carritodata = [];
+          this.vaciarCarrito();
         }
       });
       return await modalEncargo.present();
@@ -201,15 +221,23 @@ export class PrincipalPage {
 
  
   verEncargos(){ // ir a pagina de encargos
+    this.vaciarCarrito();
     this.router.navigateByUrl('/encargos')
   }
 
   verVentas(){ // ir a pagina de ventas
-    this.router.navigateByUrl('ventas');
+    this.vaciarCarrito();
+    this.router.navigateByUrl('/ventas');
   }
 
-  verOfertas(){
-    this.router.navigateByUrl('/ofertas');
+  verProductos() {
+    this.vaciarCarrito();
+    this.router.navigateByUrl('/productos');
+  }
+
+  verCategorias() {
+    this.vaciarCarrito();
+    this.router.navigateByUrl('/categorias');
   }
 
  async nuevaVenta() { //Saca por pantalla un alert para seleccionar el metodo de pago
@@ -263,11 +291,14 @@ export class PrincipalPage {
    venta.productos = this.carritodata;
    venta.timestamp = new Date().getTime();
 
-    this.db.doc(this.userdata.nombre +'/datos/ventas/' + venta.id).set(JSON.parse(JSON.stringify(venta)));
-    
-    if (this.controlEncargoId != null){
+     if (this.controlEncargoAll != null){
+      venta.nombreCliente = this.controlEncargoAll.cliente;
       this.db.doc(this.userdata.nombre +'/datos/encargos/' + this.controlEncargoId).delete();
+    }else{
+      venta.nombreCliente ="Venta Tienda";
     }
+
+    this.db.doc(this.userdata.nombre +'/datos/ventas/' + venta.id).set(JSON.parse(JSON.stringify(venta)));
 
     this.vaciarCarrito();
   }

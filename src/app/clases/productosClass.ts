@@ -6,4 +6,6 @@ export class ProductosClass {
     preciotot:number;
     cantidad:number;
     color:string;
+    preferenciaProducto:string;
+    preferenciaCategoria:string;
 }

@@ -1,0 +1,41 @@
+<ion-content>
+  <h1>DATOS DEL PRODUCTO</h1>
+  <div id="forms">
+    
+    <div id="campos">
+      <p>Nombre: </p>
+      <ion-input type="text" placeholder="Nombre" [(ngModel)]="nombreProducto"></ion-input>
+    </div>
+
+    <div id="campos">
+      <p>Precio: </p>
+      <ion-input type="number" placeholder="precio" [(ngModel)]="precioProducto"></ion-input>
+    </div>
+
+    <div id="campos">
+      <p>Categoría: </p>
+      <ion-select id="selector" [selectedText]="categoriaProducto" mode="ios" placeholder="Seleciona Categoría" (ionChange)="selectCategoria($event)">
+        <ion-select-option value="{{item}}" *ngFor="let item of categorias">{{item}}</ion-select-option>
+      </ion-select> 
+    </div>
+
+    <div id="campos">
+      <p>Posición: </p>
+      <ion-input type="number"  placeholder="posicion" [(ngModel)]="posicionProducto"></ion-input>
+    </div>
+
+  </div>
+
+  <div id="botones">
+  
+    <ion-button (click)="cancelar()">
+      Cancelar
+    </ion-button>
+    
+    <ion-button id="btnaceptar" (click)="aceptar()">
+      Aceptar
+    </ion-button>
+    
+    </div>
+    
+</ion-content>

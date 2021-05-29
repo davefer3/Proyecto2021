@@ -61,7 +61,10 @@ ion-content{
       width: 100%;
       height: 90%;
       overflow: scroll;
-      
+      scrollbar-width: none;
+    }
+    #listaprods::-webkit-scrollbar { 
+        display: none;  /* Safari and Chrome */
     }
   
     #totalprods{
@@ -100,6 +103,8 @@ ion-content{
       height: 100%;
       width: 45%;
       float: left;
+      padding-right: 2%;
+      white-space:nowrap;
     }
   
     #cantidadprod{

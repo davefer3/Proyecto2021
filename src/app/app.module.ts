@@ -13,6 +13,9 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { firebaseConfig } from 'src/environments/environment';
 
+import{ ColorPickerModule } from 'ngx-color-picker';
+
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -23,8 +26,14 @@ import { firebaseConfig } from 'src/environments/environment';
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
+    ColorPickerModule,
+
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

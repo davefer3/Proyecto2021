@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
+import { VentasModalPage } from '../ventas-modal/ventas-modal.page';
 
 @Component({
   selector: 'app-ventas',
@@ -10,163 +12,234 @@ import { Router } from '@angular/router';
 export class VentasPage  {
 
   controladorVisualFiltros:boolean = true;
-  controladorIconoBusqueda:string ="chevron-forward-outline";
-  
-  productos:any=[];
-  pagos:any=["Efectivo","Tarjeta"];
-  opciones:any=["producto","metodo de pago"]
-
-  seleccion2:any = this.opciones
-  seleccion:any=[];
-  seleccionAux:string="todo";
-
-  ventas:any=[];
-  ventasAux:any=[];
-  totalventas:number=0;
+  controladorIconoFiltros:string ="chevron-forward-outline";
 
   userdata:any=[];
 
-  fechaAuxInicio:string;
-  fechaAuxFin:string;
-  fechaInicio:string;
-  fechaFin:string;
+  ventas:any=[];
+  ventasaux:any=[];
+  ventasaux2:any=[];
+  totalventas:any;
 
+  opcionSelected:String ="Todo";
+  opcion2Selected:String = "Todo";
+  opciones:any=["Productos","Metodo de pago"];
+  opcionesSecundarias:any=[];
+  opcionespago:any=["Efectivo","Tarjeta"];
+  opcionesproductos:any=[];
 
-  
+  fechainicio:any;
+  fechafin:any;
 
   constructor(
     private router:Router,
     private db:AngularFirestore,
+    private modalController:ModalController,
     ) {
     this.userdata = JSON.parse(localStorage.getItem("usuario"));
-    this.setfecha();
-    
-    this.consultarFechaVentas();
-    this.productosSelect();
-  }
-  
-  setfecha(){ //Coloca la fecha de los encargos a visualizar en el día actual
-    this.fechaAuxInicio = new Date().toString();
-    this.fechaInicio = new Date(this.fechaAuxInicio).toLocaleDateString();
 
-    this.fechaAuxFin = new Date().toString();
-    this.fechaFin = new Date(this.fechaFin).toLocaleDateString();
-  }
+    let f = new Date();
+    this.fechainicio = new Date(f).toLocaleDateString();
 
-  onChange(event){
-    if(event.srcElement.id == "finicio"){
-      this.fechaInicio = new Date(event.detail.value).toLocaleDateString();
-    }else{
-      this.fechaFin = new Date(event.detail.value).toLocaleDateString();
-    }
-    this.consultarFechaVentas();
-  }
+    this.cargarVentas();
+    this.cargarProductos();
 
-  cambioCat(event){
-    console.log(event.srcElement.value);
-
-    if(event.srcElement.value == "producto"){
-      this.seleccion = this.productos;
-      this.seleccionAux = event.srcElement.value
-    }
-
-    if(event.srcElement.value == "metodo de pago"){
-      this.seleccion = this.pagos;
-      this.seleccionAux = event.srcElement.value
-    }
-
-    if(event.srcElement.value == "todo"){
-      this.seleccion = null;
-      this.seleccionAux = event.srcElement.value
-      this.ventas = this.ventasAux;
-    }
-    this.contarTotalVentas();
-  }
-
-  cambioSubCat(event){
-    console.log(event.srcElement.value);
-    this.ventas = [];
-    
-   if(this.seleccionAux == "producto"){
-    this.ventasAux.forEach(element => {
-      element.productos.forEach(element2 => {
-        if(element2.nombre == event.srcElement.value ){
-          this.ventas.push(element);
-      }
-      });
-    });
-    this.contarTotalVentas();
-   }
-
-   if(this.seleccionAux == "metodo de pago"){
-    this.ventasAux.forEach(element => {
-        if(element.metodoPago == event.srcElement.value){
-          this.ventas.push(element);
-        }
-    });
-    this.contarTotalVentas();
-   } 
-   
-   if(event.srcElement.value == "todo"){
-          this.ventas = this.ventasAux;
-          this.contarTotalVentas();
-   } 
     
   }
 
-  consultarFechaVentas(){ // Recoje las ventas de la bdd dependiendo de las fechas
-    let ventasCollection:AngularFirestoreCollection = this.db.collection(this.userdata.nombre+'/datos/ventas/',ref => ref.where("fecha",">=",this.fechaInicio).where("fecha","<=",this.fechaFin))
-    ventasCollection.valueChanges().subscribe(
-      res =>{
-        this.ventas = [];
-        res.forEach(element=>{
-          this.ventas.push(element);
-        })
-        this.ventasAux = this.ventas;
-        this.seleccionAux= "todo"
-        this.seleccion = [];
-        this.seleccion2 = [];
-        
-        setTimeout(() => {
-          this.seleccion2 = this.opciones
-        }, 300);
-
-        this.contarTotalVentas();
-      })
-  }
-
-  productosSelect() { //Consulta la lista de productos y las coloca en el SELECT del filtro
-    let prodsCollection:AngularFirestoreCollection = this.db.collection(this.userdata.nombre+'/datos/productos/')
-    prodsCollection.valueChanges().subscribe(
-      res =>{
-        this.productos = [];
-        res.forEach(element=>{
-          this.productos.push(element.nombre);  
-        })
-
-      })
-  }
-
-  verFiltros(){ //Hace in/visible los filtros de busqueda
-    if(this.controladorVisualFiltros == true){
-      this.controladorVisualFiltros = false;
-      this.controladorIconoBusqueda = "chevron-down-outline"
-    }else{
-      this.controladorVisualFiltros = true;
-      this.controladorIconoBusqueda = "chevron-forward-outline"
-    }
-  }
-
-  contarTotalVentas(){
-    this.totalventas = this.ventas.length
-    console.log(this.totalventas)
+  ionViewDidEnter(){
+    document.getElementById("fechainicio").shadowRoot.textContent=this.fechainicio;
   }
   
   volver(){ //vuelve a la pagina principal
     this.router.navigateByUrl('/principal');
   }
 
+  contarTotalVentas(){
+    this.totalventas = this.ventas.length
+  }
+
+  cargarVentas(){ // Recoje las ventas de la bdd dependiendo de las fechas
+    let ventasCollection:AngularFirestoreCollection = this.db.collection(this.userdata.nombre + '/datos/ventas/');
+    ventasCollection.valueChanges().subscribe(
+      res =>{
+        this.ventas =[];
+    
+        res.forEach(element => {
+            if(element.fecha.split("/")[2] >= this.fechainicio.split("/")[2]){
+        
+              if(element.fecha.split("/")[1] > this.fechainicio.split("/")[1]){
+                this.ventas.push(element);
+              }
+              if(element.fecha.split("/")[1] == this.fechainicio.split("/")[1]){
   
+                if(element.fecha.split("/")[0] >= this.fechainicio.split("/")[0]){
+                  this.ventas.push(element);
+                }
+              }
+            }
+        });
+          this.ventasaux = this.ventas;
+          this.ventasaux2 = this.ventas;
+          this.contarTotalVentas();
+      });
+
+  }
+
+  
+
+  verFiltros(){ //Hace in/visible los filtros de busqueda
+    if(this.controladorVisualFiltros == true){
+      this.controladorVisualFiltros = false;
+      this.controladorIconoFiltros = "chevron-down-outline"
+    }else{
+      this.controladorVisualFiltros = true;
+      this.controladorIconoFiltros = "chevron-forward-outline"
+    }
+  }
+
+  cargarProductos(){ //Carga los productos
+    let productosCollection2:AngularFirestoreCollection = this.db.collection(this.userdata.nombre+'/datos/productos/');
+    productosCollection2.valueChanges().subscribe(     
+      res=>{
+        this.opcionesproductos =[];
+        res.forEach(element =>{
+          this.opcionesproductos.push(element.nombre);
+        })
+  })
+}
+
+
+  cambioOptionPrincipal(event){
+    this.opcionesSecundarias = [];
+    this.opcionSelected = event.srcElement.value;
+    
+
+    if(event.srcElement.value == "Metodo de pago"){
+      this.opcionesSecundarias = this.opcionespago;
+      
+    }
+
+    if(event.srcElement.value == "Productos"){
+      this.opcionesSecundarias = this.opcionesproductos;
+    }
+
+    if(event.srcElement.value == "Todo"){
+      this.ventas = this.ventasaux2;
+      this.opcionesSecundarias = [];
+    }
+    this.contarTotalVentas();
+  }
+  
+  cambioOptionSecundaria(event){
+    this.ventas =[];
+    this.opcion2Selected = event.srcElement.value;
+    //Metodo de pagho
+    if(this.opcionSelected == "Metodo de pago"){
+      
+      if(this.opcion2Selected != "Todo"){
+        console.log("no es")
+        for(let a=0;a<this.ventasaux2.length;a++){
+          if(this.opcion2Selected == this.ventasaux2[a].metodoPago){
+            this.ventas.push(this.ventasaux2[a]);
+          }
+        }
+      }else{
+        this.ventas = this.ventasaux2;
+      }
+    }
+    //----
+
+    //Producto
+    if(this.opcionSelected == "Productos"){
+      
+      if(this.opcion2Selected != "Todo"){
+        console.log("no es")
+        for(let a=0;a<this.ventasaux2.length;a++){
+          for(let e=0;e<this.ventasaux2[a].productos.length;e++){
+            if(this.opcion2Selected == this.ventasaux2[a].productos[e].nombre){
+              this.ventas.push(this.ventasaux2[a]);
+            }
+          }
+        }
+      }else{
+        this.ventas = this.ventasaux2;
+      }
+    }
+    //-----
+    this.contarTotalVentas();
+  }
+
+  cambioFechaInicio(event){
+    this.fechainicio = new Date(event.detail.value).toLocaleDateString();
+    document.getElementById("fechainicio").shadowRoot.textContent=this.fechainicio;
+    
+    document.getElementById("fechafin").shadowRoot.textContent="cambiar";
+    this.fechafin = null;
+
+    this.cargarVentas();
+
+  }
+
+  cambioFechaFin(event){
+
+    this.fechafin = new Date(event.detail.value).toLocaleDateString();
+    document.getElementById("fechafin").shadowRoot.textContent=this.fechafin;
+    this.ventas=[];
+    this.ventasaux.forEach(element => {
+      if(element.fecha.split("/")[2] <= this.fechafin.split("/")[2]){
+        
+        if(element.fecha.split("/")[1] < this.fechafin.split("/")[1]){
+          this.ventas.push(element);
+        }
+        if(element.fecha.split("/")[1] == this.fechafin.split("/")[1]){
+
+          if(element.fecha.split("/")[0] <= this.fechafin.split("/")[0]){
+            this.ventas.push(element);
+          }
+        }
+      }
+    });
+    this.ventasaux2 = this.ventas;
+    this.contarTotalVentas();
+  }
+
+  resetarFechas(){
+    this.opcionSelected="Todo";
+    this.opcion2Selected="Todo";
+    this.opcionesSecundarias=[];
+
+    let f = new Date();
+    this.fechainicio = new Date(f).toLocaleDateString();
+
+    document.getElementById("fechainicio").shadowRoot.textContent=this.fechainicio;
+    document.getElementById("fechafin").shadowRoot.textContent="cambiar";
+    
+    this.fechafin = null;
+
+    
+
+    this.cargarVentas();
+   
+
+  }
+
+  async verVenta(venta){
+    
+    const modalEncargo = await this.modalController.create({
+      component:VentasModalPage,
+      cssClass:'productos-modal2',
+      componentProps:{
+        'venta':venta
+      },
+      backdropDismiss: true,
+    });
+    modalEncargo.onDidDismiss().then(data=>{
+      
+    });
+    
+    return await modalEncargo.present();
+  }
 
 }
 

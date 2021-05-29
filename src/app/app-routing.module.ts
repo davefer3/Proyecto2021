@@ -31,6 +31,26 @@ const routes: Routes = [
     path: 'ofertas',
     loadChildren: () => import('./ofertas/ofertas.module').then( m => m.OfertasPageModule)
   },
+  {
+    path: 'productos',
+    loadChildren: () => import('./productos/productos.module').then( m => m.ProductosPageModule)
+  },
+  {
+    path: 'productos-modal',
+    loadChildren: () => import('./productos-modal/productos-modal.module').then( m => m.ProductosModalPageModule)
+  },
+  {
+    path: 'categorias',
+    loadChildren: () => import('./categorias/categorias.module').then( m => m.CategoriasPageModule)
+  },
+  {
+    path: 'categorias-modal',
+    loadChildren: () => import('./categorias-modal/categorias-modal.module').then( m => m.CategoriasModalPageModule)
+  },
+  {
+    path: 'ventas-modal',
+    loadChildren: () => import('./ventas-modal/ventas-modal.module').then( m => m.VentasModalPageModule)
+  },
 ];
 
 @NgModule({

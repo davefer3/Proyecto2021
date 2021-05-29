@@ -1,71 +1,15 @@
 ion-content{
     --background: burlywood;
     border: 1px solid black;
-  }
+}
 
-//boton volver
 #conprin{
     height: 6%;
 }
+
 #botonVolver {
     --background:#ff3126;
     border:1px solid black;
-    
-}   
-
-#ofertasContainer{
-    width: 100%;
-    overflow: scroll;
-    height: 84%;
-    float: left;
-    display: block;
-    scrollbar-width: none;
-}
-#ofertasContainer::-webkit-scrollbar { 
-    display: none;  /* Safari and Chrome */
-}
-
-#oferta {
-    width: 100%;
-}
-
-#info{
-    width: 80%;
-    height: 80px;
-    display: block;
-    float: left;
-    border: 1px solid black;
-    margin-bottom: 10px;
-    margin-left: 10%;
-    text-align: center;
-    background-color: rgb(226, 157, 67);
-
-    p {
-        position: relative;
-        margin: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        float:left;
-        display: block;
-        width: 25%;
-        font-size: 20px;
-    }
-
-    ion-toggle {
-        position: relative;
-        margin: 0;
-        top: 50%;
-        -ms-transform: translateY(-50%);
-        transform: translateY(-50%);
-        --background-checked:rgb(95, 170, 24);
-        --background: #ff3126;   
-    }
-}
-
-#headercontainer {
-    width: 100%;
-    display:block;
-    float: left;
 }
 
 #ofertaheader {
@@ -89,11 +33,9 @@ ion-content{
         transform: translateY(-50%);
         float:left;
         display: block;
-        width: 25%;
+        width: 33%;
         font-size: 30px;
-    }
-
-    
+    }  
 }
 
 #añadir {
@@ -144,4 +86,59 @@ ion-content{
     }
 }
 
+#ofertasContainer{
+    width: 100%;
+    overflow: scroll;
+    height: 83%;
+    float: left;
+    display: block;
+    scrollbar-width: none;
+}
+#ofertasContainer::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
 
+#oferta {
+    width: 100%;
+}
+
+#info{
+    width: 80%;
+    height: 80px;
+    display: block;
+    float: left;
+    border: 1px solid black;
+    margin-bottom: 10px;
+    margin-left: 10%;
+    text-align: center;
+    background-color: rgb(226, 157, 67);
+
+    p {
+        position: relative;
+        margin: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        float:left;
+        display: block;
+        width: 25%;
+        font-size: 20px;
+    }
+
+    ion-toggle {
+        position: relative;
+        margin: 0;
+        top: 50%;
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        --background-checked:rgb(95, 170, 24);
+        --background: #ff3126;   
+    }
+    ion-input {
+        float: left;
+        width: 33%;
+        position: relative;
+        margin: 0;
+        top: 30%;
+        border: 1px solid black;
+    }
+}

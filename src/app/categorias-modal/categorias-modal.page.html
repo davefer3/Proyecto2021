@@ -1,0 +1,43 @@
+<ion-content>
+  <h1>DATOS DE LA CATEGORÍA</h1>
+  <div id="forms">
+    
+    <div id="campos">
+      <p>Color: </p>
+      <input 
+      readonly="true"
+      [value]="colorCat"
+      [style.background]="colorCat"
+      [cpAlphaChannel]="'always'"
+      [cpOutputFormat]="'hex'"
+      [(colorPicker)]="colorCat" 
+      [cpDisableInput]="true"
+      (colorPickerChange)="cmykColor=cambioColor($event);color=$event"/>
+    </div>
+
+
+    <div id="campos">
+      <p>Nombre: </p>
+      <ion-input type="text" placeholder="Nombre" [(ngModel)]="nombreCat"></ion-input>
+    </div>
+
+    <div id="campos">
+      <p>posicion: </p>
+      <ion-input type="number" placeholder="posicion" [(ngModel)]="preferenciaCat"></ion-input>
+    </div>
+
+  </div>
+
+  <div id="botones">
+  
+    <ion-button (click)="cancelar()">
+      Cancelar
+    </ion-button>
+    
+    <ion-button id="btnaceptar" (click)="aceptar()">
+      Aceptar
+    </ion-button>
+    
+    </div>
+    
+</ion-content>

@@ -1,37 +1,25 @@
 ion-content{
     --background: burlywood;
     border: 1px solid black;
-  }
+    
+}
 
-#buttonContainer {
-    width: 100%;
-    height: 5%;
+#conprin{
+    height: 6%;
 }
 
 #botonVolver {
-    --background:red;
+    --background:#ff3126;
     border:1px solid black;
-    --border-radius:0px !important;
 }
 
-#contenedor{
-    width: 100%;
-    overflow: scroll;  
-    height: 73%;
-}
-
-#encargo{
+#ofertaheader {
     display: block;
-    margin: auto;
-    width: 100%;
-    height: 80px;
-    margin-top: 5px;
-}
-
-#encargoheader {
+    float: left;
     width: 80%;
     height: 70px;
     margin: 0 auto;
+    margin-left: 10%;
     border: 1px solid black;
     margin-bottom: 10px;
     text-align: center;
@@ -46,53 +34,73 @@ ion-content{
         transform: translateY(-50%);
         float:left;
         display: block;
-    }
-
-    
+        width: 25%;
+        font-size: 30px;
+    }  
 }
 
-#borrador {
+#añadir {
     display: block;
     float: right;
     width: 10%;
     height: 100%;
-
 
     ion-icon {
     margin-top: 10px;
     margin-left: 30px;
     width: 50px;
     height: 50px;
-    }
-
-}
-
-#fechaencargo {
-    margin-bottom: 30px;
-
-    ion-datetime {
-        margin-left: 32%;
-        border: 1px solid black;
-        background-color:#f7ddb2;
-        width: 30%;
-        text-align: center;
-        align-items: center;
-        font-size: 30px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: rgb(211, 198, 188);
+    transform: translateY(-3px);
     }
 }
 
+#borrador {
+    display: block;
+    float: left;
+    width: 3%;
+    height: 100%;
+    margin-left: 10px;
 
+    ion-icon {
+        margin-top: 10px;
+        width: 50px;
+        height: 50px;
 
-#encargoContainer{
+    }
+}
+
+#editor {
+    display: block;
+    float: left;
+    width: 3%;
+    height: 100%;
+    margin-left: 10px;
+
+    ion-icon {
+        margin-top: 15px;
+        width: 45px;
+        height:45px;
+
+    }
+}
+
+#ofertasContainer{
+    width: 100%;
     overflow: scroll;
-    height: 73.4%;
+    height: 83%;
+    float: left;
+    display: block;
     scrollbar-width: none;
 }
-#encargoContainer::-webkit-scrollbar { 
+
+#ofertasContainer::-webkit-scrollbar { 
     display: none;  /* Safari and Chrome */
 }
 
-#encargo {
+#oferta {
     width: 100%;
 }
 
@@ -102,8 +110,8 @@ ion-content{
     display: block;
     float: left;
     border: 1px solid black;
-    margin-left: 10%;
     margin-bottom: 10px;
+    margin-left: 10%;
     text-align: center;
     background-color: rgb(226, 157, 67);
 
@@ -114,10 +122,17 @@ ion-content{
         transform: translateY(-50%);
         float:left;
         display: block;
+        width: 25%;
+        font-size: 20px;
     }
-    
-}
 
-#numero {width: 10%; font-size: 30px;}
-#nombre{width: 70% ; font-size: 30px;}
-#hora{width: 20%; font-size: 30px;}
+    ion-toggle {
+        position: relative;
+        margin: 0;
+        top: 50%;
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        --background-checked:rgb(95, 170, 24);
+        --background: #ff3126;   
+    }
+}

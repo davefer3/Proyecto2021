@@ -12,7 +12,7 @@ import { ProductosClass } from '../clases/productosClass';
   styleUrls: ['./encargos-modal.page.scss'],
   
 })
-export class EncargosModalPage implements OnInit {
+export class EncargosModalPage {
 
   nombreCliente:string ="";
 
@@ -40,11 +40,6 @@ export class EncargosModalPage implements OnInit {
       this.controlEncargo=true;
 
     }
-
-    
-
-  ngOnInit() {
-  }
 
   onChange(event){ // Detecta cambios en los campos #nombre #hora #fecha
 
@@ -92,8 +87,6 @@ export class EncargosModalPage implements OnInit {
                   }else{
                     totalencargos = 1;
                   }
-                  
-                  console.log("total antes " + totalencargos)
                   let encargoid = this.db.createId();
                   let encargo = new encargosClass();
                   encargo.id = encargoid
@@ -103,7 +96,7 @@ export class EncargosModalPage implements OnInit {
                   encargo.hora = this.horaEncargo;
                   encargo.productos = this.productos; 
                   this.db.doc(this.userdata.nombre+'/datos/encargos/'+encargoid).set(JSON.parse( JSON.stringify(encargo)));
-                  console.log("tota despues : "+ totalencargos)
+                
                   this.totalEncargos = totalencargos;
                   this.controlEncargo = false;
                 }
@@ -116,9 +109,6 @@ export class EncargosModalPage implements OnInit {
       this.modalcontroller.dismiss("terminado");
     }
 
-       
-
-           
   }
 
 

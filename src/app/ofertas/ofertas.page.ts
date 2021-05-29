@@ -43,6 +43,8 @@ export class OfertasPage {
   cambioEstadoOferta(event) {
     console.log(event.detail.checked);
     console.log(event.srcElement.id);
+
+    
   }
 
   borrarOferta(oferta) {

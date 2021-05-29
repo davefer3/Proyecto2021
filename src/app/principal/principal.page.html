@@ -1,7 +1,7 @@
 <ion-content>
   <div id="prin">
 
-  <ion-button (click)="addproducto(producto)" fill="clear" class="btns" *ngFor="let producto of prodsArray" [style.background-color]="producto.color">
+  <ion-button id="{{producto.id}}"(click)="addproducto(producto)" fill="clear" class="btns" *ngFor="let producto of prodsArray" [style.background-color]="producto.color" [style.display]="unset"> 
         <p>{{producto.nombre}}</p>
     </ion-button >
 
@@ -67,9 +67,8 @@
     <ion-fab-list side="top">
       
         <ion-fab-button id="fabb" (click)="verVentas()"> Ventas </ion-fab-button>
-        <ion-fab-button id="fabb" (click)="verOfertas()"> Ofertas </ion-fab-button>
-        <ion-fab-button id="fabb"> Productos </ion-fab-button>
-        <ion-fab-button id="fabb"> Categorías </ion-fab-button>
+        <ion-fab-button id="fabb" (click)="verCategorias()"> Categorías </ion-fab-button>
+        <ion-fab-button id="fabb" (click)="verProductos()"> Productos </ion-fab-button>
       
     </ion-fab-list>
   </ion-fab>

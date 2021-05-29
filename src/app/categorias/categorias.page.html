@@ -1,0 +1,47 @@
+<ion-content>
+
+  <div id="conprin">
+    <ion-button (click)="volver()" id="botonVolver">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+  <div id="headercontainer">
+
+    <div id="ofertaheader">
+      <p>Categoría</p>
+      <p>Color</p>
+      <p>Activa</p>
+    </div>
+
+    <div id="añadir" (click)="nuevaCategoria()">
+      <ion-icon  name="add"></ion-icon>
+    </div>
+
+  </div>
+
+  <div id="ofertasContainer">
+
+    <div id="oferta" *ngFor="let categoria of categorias">
+
+      <div id="info">
+        <p>{{categoria.nombre}}</p>
+        <ion-input disabled="true" [style.background-color]="categoria.color"></ion-input>
+        <ion-toggle mode="ios" checked="{{categoria.activo}}" (ionChange)="cambioEstadoCategoria(categoria, $event)"></ion-toggle>
+      </div>
+
+      <div id="editor" (click)="editarCategoria(categoria)">
+        <ion-icon  name="pencil-outline"></ion-icon>
+      </div>
+
+      <div id="borrador" (click)="borrarCategoria(categoria)">
+        <ion-icon  name="trash-outline"></ion-icon>
+      </div>
+
+    
+    </div>
+
+  </div>
+
+</ion-content>
+

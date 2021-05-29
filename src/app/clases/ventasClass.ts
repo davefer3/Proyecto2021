@@ -5,4 +5,5 @@ export class ventasClass {
     metodoPago:string;
     productos:any;
     timestamp:any;
+    nombreCliente:String;
 }
